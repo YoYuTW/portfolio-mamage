@@ -21,6 +21,10 @@ const Login = () => {
       })
     });
     const message = await response.json();
+    if (message.error.includes('Wrong')) {
+      setError(message.error.split(': ')[1]);
+      return
+    }
     if (message.error) {
       setError(message.error)
       return

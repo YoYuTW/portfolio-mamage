@@ -9,9 +9,20 @@ export default function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setIsLogin(true)
-    }
+    async function checkLogin() {
+      const response = await fetch(`${process.env.REACT_APP_API}api/login`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${localStorage.getItem("token")}`        
+        },
+      });
+      const message = response.json();
+      if (message === "authorized.") {
+        setIsLogin(true)
+      }
+    };
+    checkLogin();
   },[]);
 
   return (
